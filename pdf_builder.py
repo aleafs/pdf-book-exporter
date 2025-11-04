@@ -6,13 +6,12 @@ import tree
 import emoji_support
 import cache_utils
 
-def pandoc_add_filters(cmd: List[str]) -> List[str]:
+def add_lua_filters(cmd: list[str]) -> list[str]:
     root = os.path.join(os.path.dirname(__file__), 'filters')
     if os.path.isdir(root):
         for name in os.listdir(root):
             if name.endswith('.lua'):
-                print(name)
-                cmd.extend(f'--lua-filter={os.path.join(root, name)}')
+                cmd.extend([f'--lua-filter={os.path.join(root, name)}]')
 
     return cmd
 
@@ -222,7 +221,7 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
         except Exception as e:
             print(f"⚠️  Error adding simple image attribute cleanup filter: {e}")
 
-        cmd = pandoc_add_filters(cmd)
+        cmd = add_lua_filters(cmd)
 
         if processed_cover_path:
             cmd.extend(['-V', f'cover-image={os.path.abspath(processed_cover_path)}'])
@@ -405,8 +404,8 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
                     '--columns=120'
                 ]
 
-                cmd_tex = pandoc_add_filters(cmd_tex)
-                
+                cmd_tex = add_lua_filters(cmd_tex)
+
                 tex_result = subprocess.run(cmd_tex, check=True, capture_output=True, text=True, timeout=300)
                 if tex_result.stderr:
                     print(f"⚠️  LaTeX export warnings:\n{tex_result.stderr}")
