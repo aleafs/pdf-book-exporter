@@ -1,9 +1,19 @@
 import os
+from pathlib import Path
 from datetime import datetime
 import tempfile
 import tree
 import emoji_support
 import cache_utils
+
+def pandoc_add_filters(cmd: List[str], root:str) -> List[str]:
+    if os.path.isdir(root):
+        for name in os.listdir(root):
+            if name.endswith('.lua'):
+                print(name)
+                cmd.extend(f'--lua-filter={os.path.join(root, name)}')
+
+    return cmd
 
 def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_arg=None, appendix_path=None, emoji=False, max_table_width=0.98):
     import os
@@ -210,44 +220,9 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
                 print(f"✅ Added simple image attribute cleanup filter: {simple_image_attr_cleanup_path}")
         except Exception as e:
             print(f"⚠️  Error adding simple image attribute cleanup filter: {e}")
-        try:
-            fix_lstinline_path = os.path.join(filters_dir, 'fix-lstinline.lua')
-            if os.path.exists(fix_lstinline_path):
-                cmd.extend([f'--lua-filter={fix_lstinline_path}'])
-                print(f"✅ Added lstinline fix filter: {fix_lstinline_path}")
-        except Exception as e:
-            print(f"⚠️  Error adding lstinline fix filter: {e}")
-        try:
-            ansi_cleanup_path = os.path.join(filters_dir, 'ansi-cleanup.lua')
-            if os.path.exists(ansi_cleanup_path):
-                cmd.extend([f'--lua-filter={ansi_cleanup_path}'])
-                print(f"✅ Added ANSI cleanup filter: {ansi_cleanup_path}")
-        except Exception as e:
-            print(f"⚠️  Error adding ANSI cleanup filter: {e}")
-        try:
-            if os.path.exists(cleanup_filter_path):
-                cmd.extend([f'--lua-filter={cleanup_filter_path}'])
-                print(f"✅ Added cleanup filter: {cleanup_filter_path}")
-        except Exception as e:
-            print(f"⚠️  Error adding cleanup filter: {e}")
-        try:
-            if os.path.exists(minted_filter_path):
-                cmd.extend([f'--lua-filter={minted_filter_path}'])
-                print(f"✅ Added minted filter: {minted_filter_path}")
-        except Exception as e:
-            print(f"⚠️  Error adding minted filter: {e}")
-        try:
-            if os.path.exists(symbol_filter_path):
-                cmd.extend([f'--lua-filter={symbol_filter_path}'])
-                print(f"✅ Added symbol fallback filter: {symbol_filter_path}")
-        except Exception as e:
-            print(f"⚠️  Error adding symbol fallback filter: {e}")
-        try:
-            if os.path.exists(lua_filter_path):
-                cmd.extend([f'--lua-filter={lua_filter_path}'])
-                print(f"✅ Added table-wrap filter: {lua_filter_path}")
-        except Exception as e:
-            print(f"⚠️  Error adding table-wrap filter: {e}")
+
+        cmd = pandoc_add_filters(cmd, os.path.join(os.path.dirname(__file__), 'filters'))
+
         if processed_cover_path:
             cmd.extend(['-V', f'cover-image={os.path.abspath(processed_cover_path)}'])
         if processed_backcover_path:
