@@ -6,7 +6,8 @@ import tree
 import emoji_support
 import cache_utils
 
-def pandoc_add_filters(cmd: List[str], root:str) -> List[str]:
+def pandoc_add_filters(cmd: List[str]) -> List[str]:
+    root = os.path.join(os.path.dirname(__file__), 'filters')
     if os.path.isdir(root):
         for name in os.listdir(root):
             if name.endswith('.lua'):
@@ -221,7 +222,7 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
         except Exception as e:
             print(f"⚠️  Error adding simple image attribute cleanup filter: {e}")
 
-        cmd = pandoc_add_filters(cmd, os.path.join(os.path.dirname(__file__), 'filters'))
+        cmd = pandoc_add_filters(cmd)
 
         if processed_cover_path:
             cmd.extend(['-V', f'cover-image={os.path.abspath(processed_cover_path)}'])
@@ -403,10 +404,9 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
                     '--wrap=preserve',
                     '--columns=120'
                 ]
-                # Reuse the same filters (Lua filters are honored for LaTeX as well)
-                for f in [emoji_filter_path, os.path.join(filters_dir, 'fix-lstinline.lua'), os.path.join(filters_dir, 'ansi-cleanup.lua'), os.path.join(filters_dir, 'minted-filter.lua'), cleanup_filter_path, symbol_filter_path, lua_filter_path]:
-                    if os.path.exists(f):
-                        cmd_tex.extend(['--lua-filter=' + f])
+
+                cmd_tex = pandoc_add_filters(cmd_tex)
+                
                 tex_result = subprocess.run(cmd_tex, check=True, capture_output=True, text=True, timeout=300)
                 if tex_result.stderr:
                     print(f"⚠️  LaTeX export warnings:\n{tex_result.stderr}")
