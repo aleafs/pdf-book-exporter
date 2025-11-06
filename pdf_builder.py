@@ -11,7 +11,7 @@ def add_lua_filters(cmd: list[str]) -> list[str]:
     if os.path.isdir(root):
         for name in os.listdir(root):
             if name.endswith('.lua'):
-                cmd.extend([f'--lua-filter={os.path.join(root, name)}]')
+                cmd.extend([f'--lua-filter={os.path.join(root, name)}'])
 
     return cmd
 
