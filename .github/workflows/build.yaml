@@ -5,9 +5,9 @@ on:
     tags:
       - v*
 
-    paths:
-      - .github/workflows/build.yaml
-      - Dockerfile
+    branches:
+      - main
+
 env:
   DOCKER_BUILD_RECORD_UPLOAD: false
   DOCKER_BUILD_RECORD_RETENTION_DAYS: 1
