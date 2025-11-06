@@ -306,7 +306,7 @@ function Table(tbl)
   local latex_content = {}
   
   -- Start longtable environment
-  latex_content[#latex_content + 1] = "\\begin{longtable}" .. "{" .. column_spec .. "}"
+  latex_content[#latex_content + 1] = "\\begin{longtable}[c]" .. "{" .. column_spec .. "}"
   latex_content[#latex_content + 1] = "\\toprule"
   
   -- Process header if it exists
