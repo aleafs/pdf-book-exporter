@@ -1,0 +1,71 @@
+name: Release Docker
+
+on:
+  push:
+    tags:
+      - v*
+
+    paths:
+      - .github/workflows/build.yaml
+      - Dockerfile
+env:
+  DOCKER_BUILD_RECORD_UPLOAD: false
+  DOCKER_BUILD_RECORD_RETENTION_DAYS: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Download latex-admonition
+        uses: actions/checkout@v5
+        with:
+          repository: GitHubonline1396529/callout2latex
+          path: temp/callout2latex
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: 1stblue/pandoc
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=semver,pattern={{version}}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: 1stblue
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build image and push
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          provenance: false
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Cleanup artifacts
+        if: ${{ always() }}
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          failOnError: false
+          name: |
+            *.dockerbuild
