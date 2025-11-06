@@ -307,7 +307,7 @@ function Table(tbl)
   
   -- Start longtable environment
   latex_content[#latex_content + 1] = "\\begin{longtable}" .. "{" .. column_spec .. "}"
-  latex_content[#latex_content + 1] = "\\hline"
+  latex_content[#latex_content + 1] = "\\toprule"
   
   -- Process header if it exists
   if tbl.head and tbl.head.rows and #tbl.head.rows > 0 then
@@ -320,7 +320,6 @@ function Table(tbl)
       end
       latex_content[#latex_content + 1] = table.concat(row_content, " & ") .. " \\\\"
     end
-    latex_content[#latex_content + 1] = "\\hline"
     latex_content[#latex_content + 1] = "\\endfirsthead"
     
     -- Repeat header on subsequent pages
@@ -334,7 +333,7 @@ function Table(tbl)
       end
       latex_content[#latex_content + 1] = table.concat(row_content, " & ") .. " \\\\"
     end
-    latex_content[#latex_content + 1] = "\\hline"
+    latex_content[#latex_content + 1] = "\\midrule"
     latex_content[#latex_content + 1] = "\\endhead"
   end
   
@@ -350,14 +349,13 @@ function Table(tbl)
             row_content[#row_content + 1] = cell_latex
           end
           latex_content[#latex_content + 1] = table.concat(row_content, " & ") .. " \\\\"
-          latex_content[#latex_content + 1] = "\\hline"  -- Add horizontal line after each row
         end
       end
     end
   end
   
   -- End longtable environment
-  latex_content[#latex_content + 1] = "\\hline"
+  latex_content[#latex_content + 1] = "\\bottomrule"
   latex_content[#latex_content + 1] = "\\end{longtable}"
   
   -- Return as RawBlock
