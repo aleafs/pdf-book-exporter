@@ -31,3 +31,6 @@ clean:
 	@rm -f emoji-font-config.tex
 	@rm -rf test-output
 	@echo "Clean complete."
+
+image:
+	docker buildx build -f ./Dockerfile -t aleafs/pandoc:latest .
