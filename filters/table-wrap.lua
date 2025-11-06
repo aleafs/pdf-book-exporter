@@ -280,7 +280,7 @@ function Table(tbl)
   local col_width = string.format("\\dimexpr%.4f\\textwidth\\relax", width_ratio)
   
   -- Create column specification with proper alignment and line breaking support
-  local column_spec = "|"
+  local column_spec = ""
   for i = 1, num_cols do
     local alignment_spec = ""
     
