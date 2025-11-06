@@ -28,7 +28,7 @@ class LuaDependencyValidator:
     
     def __init__(self, script_dir: str):
         self.script_dir = script_dir
-        self.emoji_filter_path = os.path.join(script_dir, 'filters', 'emoji-passthrough.lua')
+        self.emoji_filter_path = os.path.join(script_dir, 'emoji-passthrough.lua')
     
     def validate_lua_filter_syntax(self, filter_path: str) -> LuaValidationResult:
         """Validate Lua filter syntax using lua command."""
