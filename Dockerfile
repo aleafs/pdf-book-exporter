@@ -27,6 +27,7 @@ RUN apt-get update && \
     pip3 install PyYAML --break-system-packages && \
     wget --progress=bar:force:noscroll https://github.com/adobe-fonts/source-han-sans/releases/download/2.005R/09_SourceHanSansSC.zip && \
     unzip 09_SourceHanSansSC.zip -d /usr/share/fonts && \
+    rm -f 09_SourceHanSansSC.zip && \
     ln -f -s /app/vimrc /etc/vim/vimrc.local && \
     echo "alias ll='ls -l --color=auto'" >> /root/.bashrc
 
