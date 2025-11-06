@@ -33,7 +33,8 @@ function Table(elem)
     table.insert(latex_lines, "\\arrayrulecolor{black}")
     table.insert(latex_lines, "\\begin{longtable}{" .. colspec .. "}")
     table.insert(latex_lines, "\\tablefontsize")  -- Shrink font if necessary
-    table.insert(latex_lines, "\\hline")
+    table.insert(latex_lines, "\\toprule")
+    -- table.insert(latex_lines, "\\hline")
 
     -- Process header if exists
     if elem.head and elem.head.rows and #elem.head.rows > 0 then
@@ -56,8 +57,8 @@ function Table(elem)
             table.insert(latex_lines, table.concat(row_content, " & ") .. " \\\\")
             -- Gray line after header
             table.insert(latex_lines, "\\arrayrulecolor{gray!40}")
-            table.insert(latex_lines, "\\hline")
         end
+        table.insert(latex_lines, "\\midrule")
     end
 
     -- Process body rows
@@ -79,13 +80,12 @@ function Table(elem)
                 -- Gray lines between rows, black line for last row
                 if i < #body.body then
                     table.insert(latex_lines, "\\arrayrulecolor{gray!40}")
-                    table.insert(latex_lines, "\\hline")
                 else
                     table.insert(latex_lines, "\\arrayrulecolor{black}")
-                    table.insert(latex_lines, "\\hline")
                 end
             end
         end
+        table.insert(latex_lines, "\\bottomrule")
     end
 
     -- End table
