@@ -299,7 +299,7 @@ function Table(tbl)
       alignment_spec = ">{\\raggedright\\arraybackslash\\hspace{0pt}}p{" .. col_width .. "}"
     end
     
-    column_spec = column_spec .. alignment_spec .. "|"
+    column_spec = column_spec .. alignment_spec
   end
   
   -- Create raw LaTeX block for longtable
