@@ -305,7 +305,7 @@ Test document for LuaLaTeX compilation.
     
     def check_emoji_filter(self) -> DiagnosticResult:
         """Check emoji filter availability and functionality with comprehensive validation."""
-        emoji_filter_path = os.path.join(self.script_dir, 'filters', 'emoji-passthrough.lua')
+        emoji_filter_path = os.path.join(self.script_dir, 'emoji-passthrough.lua')
         
         if not os.path.exists(emoji_filter_path):
             return DiagnosticResult(
@@ -313,7 +313,7 @@ Test document for LuaLaTeX compilation.
                 status="fail",
                 message=f"Emoji filter not found at {emoji_filter_path}",
                 suggestions=[
-                    "Ensure filters/emoji-passthrough.lua exists in the export script directory",
+                    "Ensure emoji-passthrough.lua exists in the export script directory",
                     "Check if the file was accidentally deleted or moved",
                     "Verify file permissions allow reading"
                 ]
@@ -334,7 +334,7 @@ Test document for LuaLaTeX compilation.
                 status = "fail"
                 message = f"Emoji filter has critical issues: {'; '.join(lua_result.errors[:2])}"
                 suggestions = [
-                    "Check filters/emoji-passthrough.lua syntax and completeness",
+                    "Check emoji-passthrough.lua syntax and completeness",
                     "Verify Pandoc Lua filter support",
                     "Ensure all required functions are present"
                 ]
@@ -342,7 +342,7 @@ Test document for LuaLaTeX compilation.
                 status = "warning"
                 message = f"Emoji filter has minor issues: {'; '.join(lua_result.warnings[:2])}"
                 suggestions = [
-                    "Consider updating filters/emoji-passthrough.lua",
+                    "Consider updating emoji-passthrough.lua",
                     "Check for missing optional features"
                 ]
             
@@ -395,7 +395,7 @@ Test document for LuaLaTeX compilation.
                         'missing_functions': missing_functions
                     },
                     suggestions=[
-                        "Check if filters/emoji-passthrough.lua is the correct version",
+                        "Check if emoji-passthrough.lua is the correct version",
                         "Consider regenerating the emoji filter file"
                     ]
                 )
