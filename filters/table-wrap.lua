@@ -333,13 +333,13 @@ function Table(tbl)
       end
       latex_content[#latex_content + 1] = table.concat(row_content, " & ") .. " \\\\"
     end
-    latex_content[#latex_content + 1] = "\\midrule"
     latex_content[#latex_content + 1] = "\\endhead"
   end
   
   -- Process body rows
   if tbl.bodies and #tbl.bodies > 0 then
     for _, body in ipairs(tbl.bodies) do
+      latex_content[#latex_content + 1] = "\\midrule"
       if body.body then
         for _, row in ipairs(body.body) do
           local row_content = {}

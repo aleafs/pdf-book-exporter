@@ -34,7 +34,6 @@ function Table(elem)
     table.insert(latex_lines, "\\begin{longtable}{" .. colspec .. "}")
     table.insert(latex_lines, "\\tablefontsize")  -- Shrink font if necessary
     table.insert(latex_lines, "\\toprule")
-    -- table.insert(latex_lines, "\\hline")
 
     -- Process header if exists
     if elem.head and elem.head.rows and #elem.head.rows > 0 then
@@ -58,12 +57,12 @@ function Table(elem)
             -- Gray line after header
             table.insert(latex_lines, "\\arrayrulecolor{gray!40}")
         end
-        table.insert(latex_lines, "\\midrule")
     end
 
     -- Process body rows
     if elem.bodies and #elem.bodies > 0 then
         for _, body in ipairs(elem.bodies) do
+            table.insert(latex_lines, "\\midrule")
             for i, row in ipairs(body.body) do
                 local row_content = {}
                 for _, cell in ipairs(row.cells) do
@@ -77,12 +76,6 @@ function Table(elem)
                     table.insert(row_content, cell_latex)
                 end
                 table.insert(latex_lines, table.concat(row_content, " & ") .. " \\\\")
-                -- Gray lines between rows, black line for last row
-                if i < #body.body then
-                    table.insert(latex_lines, "\\arrayrulecolor{gray!40}")
-                else
-                    table.insert(latex_lines, "\\arrayrulecolor{black}")
-                end
             end
         end
         table.insert(latex_lines, "\\bottomrule")
@@ -91,7 +84,6 @@ function Table(elem)
     -- End table
     table.insert(latex_lines, "\\end{longtable}")
     table.insert(latex_lines, "\\relax")  -- Reset line breaking behavior
-    table.insert(latex_lines, "\\arrayrulecolor{black}") -- Reset to black
 
     -- Return as raw LaTeX
     return pandoc.RawBlock("latex", table.concat(latex_lines, "\n"))
