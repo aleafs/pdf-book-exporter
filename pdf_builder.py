@@ -28,10 +28,9 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
     import tree
     import emoji_support
     import image_utils
-    
+
     success = False
 
-    available_font = image_utils.get_available_fonts() if hasattr(image_utils, 'get_available_fonts') else metadata.get('font')
     cache_dir = cache_utils.get_cache_dir(book_dir)
 
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -143,13 +142,7 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
         else:
             template_path = os.path.join(os.path.dirname(__file__), 'template.tex')
 
-        filters_dir = os.path.join(os.path.dirname(__file__), 'filters')
-        cleanup_filter_path = os.path.join(filters_dir, 'cleanup-filter.lua')
-        lua_filter_path = os.path.join(filters_dir, 'table-wrap.lua')
-        minted_filter_path = os.path.join(filters_dir, 'minted-filter.lua')
-        emoji_filter_path = os.path.join(filters_dir, 'emoji-passthrough.lua')
-        symbol_filter_path = os.path.join(filters_dir, 'symbol-fallback-filter.lua')
-        simple_image_attr_cleanup_path = os.path.join(filters_dir, 'simple-image-attr-cleanup.lua')
+        emoji_filter_path = os.path.join(os.path.dirname(__file__), 'emoji-passthrough.lua')
 
         pdf_engine = emoji_validation['engine']
         if emoji:
@@ -214,12 +207,6 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
                 print(f"⚠️  Error configuring emoji filter: {e}")
                 print("   Continuing without emoji filter")
         cmd.extend(['--columns=120'])
-        try:
-            if os.path.exists(simple_image_attr_cleanup_path):
-                cmd.extend([f'--lua-filter={simple_image_attr_cleanup_path}'])
-                print(f"✅ Added simple image attribute cleanup filter: {simple_image_attr_cleanup_path}")
-        except Exception as e:
-            print(f"⚠️  Error adding simple image attribute cleanup filter: {e}")
 
         cmd = add_lua_filters(cmd)
 
