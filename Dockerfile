@@ -25,7 +25,7 @@ RUN apt-get update && \
       fonts-noto-color-emoji \
       fonts-firacode && \
     pip3 install PyYAML --break-system-packages && \
-    wget https://github.com/adobe-fonts/source-han-sans/releases/download/2.005R/09_SourceHanSansSC.zip && \
+    wget --progress=bar:force:noscroll https://github.com/adobe-fonts/source-han-sans/releases/download/2.005R/09_SourceHanSansSC.zip && \
     unzip 09_SourceHanSansSC.zip -d /usr/share/fonts && \
     ln -f -s /app/vimrc /etc/vim/vimrc.local && \
     echo "alias ll='ls -l --color=auto'" >> /root/.bashrc
