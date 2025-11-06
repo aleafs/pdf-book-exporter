@@ -333,6 +333,7 @@ function Table(tbl)
       end
       latex_content[#latex_content + 1] = table.concat(row_content, " & ") .. " \\\\"
     end
+    latex_content[#latex_content + 1] = "\\midrule"
     latex_content[#latex_content + 1] = "\\endhead"
   end
   
