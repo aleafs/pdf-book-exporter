@@ -577,6 +577,7 @@ Test document for LuaLaTeX compilation.
                 details={'available_packages': [pkg for pkg, _ in available_packages]}
             )
         elif len(missing_packages) < len(required_packages):
+            print(missing_packages)
             return DiagnosticResult(
                 name="LaTeX Packages",
                 status="warning",
@@ -734,7 +735,7 @@ Test
             print(f"\n⚠️  Warnings ({len(validation.warnings)}):")
             for warning in validation.warnings:
                 print(f"  • {warning}")
-        
+
         # Emoji font information
         if validation.emoji_fonts and 'detected_fonts' in validation.emoji_fonts:
             print(f"\n🎨 Emoji Fonts:")
