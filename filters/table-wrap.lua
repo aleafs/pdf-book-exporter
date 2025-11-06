@@ -323,7 +323,7 @@ function Table(tbl)
     latex_content[#latex_content + 1] = "\\endfirsthead"
     
     -- Repeat header on subsequent pages
-    latex_content[#latex_content + 1] = "\\hline"
+    latex_content[#latex_content + 1] = "\\toprule"
     for _, row in ipairs(tbl.head.rows) do
       local row_content = {}
       for j, cell in ipairs(row.cells) do
