@@ -233,7 +233,7 @@ function Table(tbl)
   
   -- Extract maximum table width from Pandoc metadata (passed via -V max_table_width)
   -- Use more conservative default to prevent margin overflow
-  local max_table_width = 0.85  -- Conservative default for reliable margin control
+  local max_table_width = 1.00  -- Conservative default for reliable margin control
   if PANDOC_STATE.meta and PANDOC_STATE.meta.max_table_width then
     local meta_value = PANDOC_STATE.meta.max_table_width
     if type(meta_value) == "table" and meta_value.t == "MetaInlines" then
