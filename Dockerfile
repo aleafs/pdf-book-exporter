@@ -22,12 +22,12 @@ RUN apt-get update && \
       texlive-lang-japanese \
       texlive-font-utils \
       texlive-fonts-recommended \
-      fonts-noto-color-emoji \
-      fonts-firacode && \
+      fonts-noto-color-emoji && \
     pip3 install PyYAML --break-system-packages && \
     wget --progress=bar:force:noscroll https://github.com/adobe-fonts/source-han-sans/releases/download/2.005R/09_SourceHanSansSC.zip && \
     unzip 09_SourceHanSansSC.zip -d /usr/share/fonts && \
     rm -f 09_SourceHanSansSC.zip && \
+    wget --progress=bar:force:noscroll -O/usr/share/fonts/SourceHanMono.ttc https://github.com/adobe-fonts/source-han-mono/releases/download/1.002/SourceHanMono.ttc && \
     ln -f -s /app/vimrc /etc/vim/vimrc.local && \
     echo "alias ll='ls -l --color=auto'" >> /root/.bashrc
 
