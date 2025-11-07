@@ -1099,39 +1099,39 @@ $endif$
   % LuaLaTeX monospace font configuration - prioritize SourceHanMono for code blocks
   % Use SourceHanMono for proper monospace code display with CJK support
   \IfFontExistsTF{Source Han Mono SC}{
-    \setmonofont{Source Han Mono SC}[Scale=0.8,Renderer=HarfBuzz]
-    \newfontfamily\codefont{Source Han Mono SC}[Scale=0.8,Renderer=HarfBuzz]
+    \setmonofont{Source Han Mono SC}[Scale=1.0,Renderer=HarfBuzz]
+    \newfontfamily\codefont{Source Han Mono SC}[Scale=1.0,Renderer=HarfBuzz]
     \typeout{Set monospace font to Source Han Mono SC for CJK code support}
   }{
     \IfFontExistsTF{Source Han Sans SC}{
-      \setmonofont{Source Han Sans SC}[Scale=0.8,Renderer=HarfBuzz]
-      \newfontfamily\codefont{Source Han Sans SC}[Scale=0.8,Renderer=HarfBuzz]
+      \setmonofont{Source Han Sans SC}[Scale=1.0,Renderer=HarfBuzz]
+      \newfontfamily\codefont{Source Han Sans SC}[Scale=1.0,Renderer=HarfBuzz]
       \typeout{Set monospace font to Source Han Sans SC for CJK support (fallback)}
     }{
       \IfFontExistsTF{PingFang SC}{
-        \setmonofont{PingFang SC}[Scale=0.8,Renderer=HarfBuzz]
-        \newfontfamily\codefont{PingFang SC}[Scale=0.8,Renderer=HarfBuzz]
+        \setmonofont{PingFang SC}[Scale=1.0,Renderer=HarfBuzz]
+        \newfontfamily\codefont{PingFang SC}[Scale=1.0,Renderer=HarfBuzz]
         \typeout{Set monospace font to PingFang SC (macOS fallback with CJK)}
       }{
         \IfFontExistsTF{JetBrains Mono}{
           \setmonofont{JetBrains Mono}[
-            Scale=0.8,
+            Scale=1.0,
             BoldFont=JetBrains Mono Bold,
             Renderer=HarfBuzz
           ]
-          \newfontfamily\codefont{JetBrains Mono}[Scale=0.8,Renderer=HarfBuzz]
+          \newfontfamily\codefont{JetBrains Mono}[Scale=1.0,Renderer=HarfBuzz]
           \typeout{Warning: Using JetBrains Mono - CJK characters may not display properly}
         }{
           \IfFontExistsTF{Fira Code}{
             \setmonofont{Fira Code}[
-              Scale=0.8,
+              Scale=1.0,
               BoldFont=Fira Code Bold,
               Renderer=HarfBuzz
             ]
-            \newfontfamily\codefont{Fira Code}[Scale=0.8,Renderer=HarfBuzz]
+            \newfontfamily\codefont{Fira Code}[Scale=1.0,Renderer=HarfBuzz]
           }{
-            \setmonofont{Menlo}[Scale=0.8,Renderer=HarfBuzz]
-            \newfontfamily\codefont{Menlo}[Scale=0.8,Renderer=HarfBuzz]
+            \setmonofont{Menlo}[Scale=1.0,Renderer=HarfBuzz]
+            \newfontfamily\codefont{Menlo}[Scale=1.0,Renderer=HarfBuzz]
           }
         }
       }
@@ -1141,37 +1141,37 @@ $endif$
   % XeLaTeX monospace font configuration with CJK support
   % Use SourceHanMono for proper monospace code display with CJK support
   \IfFontExistsTF{Source Han Mono SC}{
-    \setmonofont{Source Han Mono SC}[Scale=0.8]
-    \newfontfamily\codefont{Source Han Mono SC}[Scale=0.8]
+    \setmonofont{Source Han Mono SC}[Scale=1.0]
+    \newfontfamily\codefont{Source Han Mono SC}[Scale=1.0]
     \typeout{Set monospace font to Source Han Mono SC for CJK code support}
   }{
     \IfFontExistsTF{Source Han Sans SC}{
-      \setmonofont{Source Han Sans SC}[Scale=0.8]
-      \newfontfamily\codefont{Source Han Sans SC}[Scale=0.8]
+      \setmonofont{Source Han Sans SC}[Scale=1.0]
+      \newfontfamily\codefont{Source Han Sans SC}[Scale=1.0]
       \typeout{Set monospace font to Source Han Sans SC for CJK support (fallback)}
     }{
       \IfFontExistsTF{PingFang SC}{
-        \setmonofont{PingFang SC}[Scale=0.8]
-        \newfontfamily\codefont{PingFang SC}[Scale=0.8]
+        \setmonofont{PingFang SC}[Scale=1.0]
+        \newfontfamily\codefont{PingFang SC}[Scale=1.0]
         \typeout{Set monospace font to PingFang SC (macOS fallback with CJK)}
       }{
       \IfFontExistsTF{JetBrains Mono}{
         \setmonofont{JetBrains Mono}[
-          Scale=0.8,
+          Scale=1.0,
           BoldFont=JetBrains Mono Bold
         ]
-        \newfontfamily\codefont{JetBrains Mono}[Scale=0.8]
+        \newfontfamily\codefont{JetBrains Mono}[Scale=1.0]
         \typeout{Warning: Using JetBrains Mono - CJK characters may not display properly}
       }{
         \IfFontExistsTF{Fira Code}{
           \setmonofont{Fira Code}[
-            Scale=0.8,
+            Scale=1.0,
             BoldFont=Fira Code Bold
           ]
-          \newfontfamily\codefont{Fira Code}[Scale=0.8]
+          \newfontfamily\codefont{Fira Code}[Scale=1.0]
         }{
-          \setmonofont{Menlo}[Scale=0.8]
-          \newfontfamily\codefont{Menlo}[Scale=0.8]
+          \setmonofont{Menlo}[Scale=1.0]
+          \newfontfamily\codefont{Menlo}[Scale=1.0]
         }
       }
     }
