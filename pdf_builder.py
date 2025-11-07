@@ -397,14 +397,6 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
                 if tex_result.stderr:
                     print(f"⚠️  LaTeX export warnings:\n{tex_result.stderr}")
                 print(f"📝 LaTeX source exported: {output_tex}")
-                
-                # Clean up the generated .tex file after successful PDF generation
-                try:
-                    if os.path.exists(output_tex):
-                        os.unlink(output_tex)
-                        print(f"🗑️  Cleaned up LaTeX source file: {output_tex}")
-                except Exception as cleanup_error:
-                    print(f"⚠️  Failed to clean up LaTeX source file: {cleanup_error}")
                     
             except Exception as e:
                 print(f"⚠️  Failed to export LaTeX source: {e}")
