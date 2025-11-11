@@ -1,10 +1,8 @@
 import os
-from pathlib import Path
-from datetime import datetime
 import tempfile
-import tree
-import emoji_support
+
 import cache_utils
+
 
 def add_lua_filters(cmd: list[str]) -> list[str]:
     root = os.path.join(os.path.dirname(__file__), 'filters')
@@ -19,10 +17,7 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
     import os
     import subprocess
     from datetime import datetime
-    import shutil
-    import re
     import time
-    import uuid
     # 统一前缀
     import cache_utils
     import tree
