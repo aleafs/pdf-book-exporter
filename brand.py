@@ -50,9 +50,9 @@ class Config:
     ''' 通配符替换'''
 
     def replace(self, content: str):
-        return (content.replace('$Brand.Title$', self.title)
-                .replace('$Brand.Prefix$', self.prefix)
-                .replace('$Brand.Vendor$', self.vendor))
+        return (content.replace('$Title$', self.title)
+                .replace('$Prefix$', self.prefix)
+                .replace('$Vendor$', self.vendor))
 
 
 if __name__ == '__main__':
