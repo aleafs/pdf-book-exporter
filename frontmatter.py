@@ -139,7 +139,7 @@ def load_book_config(book_dir):
                         'typography': {
                             'body_color': book_config.get('body_color', '#000000'),
                             'heading_color': book_config.get('heading_color', '#000000'),
-                            'link_color': book_config.get('link_color', '#0066cc'),
+                            'link_color': book_config.get('link_color', '#19166f'),
                             'code_color': book_config.get('code_color', '#d14'),
                             'quote_color': book_config.get('quote_color', '#666666'),
                             'caption_color': book_config.get('caption_color', '#666666')
