@@ -35,7 +35,6 @@
     colframe=notetypecolor, % Frame color.
     coltitle=white, % Title color.
     fonttitle=\bfseries\small, % Bold small font for block title.
-    fontupper=\bfseries, % Bold normal sized font for block text.
     boxrule=0.75mm, % Frame line width.
 % arc=2mm, % Corner radius.
     left=2.5pt, right=2.5pt, % Paddings.
@@ -50,7 +49,6 @@
     colframe=warningtypecolor, % Frame color.
     coltitle=white, % Title color.
     fonttitle=\bfseries\small, % Bold small font for block title.
-    fontupper=\bfseries, % Bold normal sized font for block text.
     boxrule=0.75mm, % Frame line width.
 % arc=2mm, % Corner radius.
     left=2.5pt, right=2.5pt, % Paddings.
@@ -65,7 +63,6 @@
     colframe=tiptypecolor, % Frame color.
     coltitle=white, % Title color.
     fonttitle=\bfseries\small, % Bold small font for block title.
-    fontupper=\bfseries, % Bold normal sized font for block text.
     boxrule=0.75mm, % Frame line width.
 % arc=2mm, % Corner radius.
     left=2.5pt, right=2.5pt, % Paddings.
@@ -80,7 +77,6 @@
     colframe=importanttypecolor, % Frame color.
     coltitle=white, % Title color.
     fonttitle=\bfseries\small, % Bold small font for block title.
-    fontupper=\bfseries, % Bold normal sized font for block text.
     boxrule=0.75mm, % Frame line width.
 % arc=2mm, % Corner radius.
     left=2.5pt, right=2.5pt, % Paddings.
@@ -95,7 +91,6 @@
     colframe=cautiontypecolor, % Frame color.
     coltitle=white, % Title color.
     fonttitle=\bfseries\small, % Bold small font for block title.
-    fontupper=\bfseries, % Bold normal sized font for block text.
     boxrule=0.75mm, % Frame line width.
 % arc=2mm, % Corner radius.
     left=2.5pt, right=2.5pt, % Paddings.
@@ -449,11 +444,9 @@ $endif$
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{graphicx}
-\usepackage[dvipsnames]{xcolor}
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{booktabs}
-\usepackage{colortbl}
 \usepackage{caption}
 \usepackage{float}
 \usepackage{chngcntr}
@@ -1505,22 +1498,22 @@ $endif$
     pdffitwindow=false,
     pdfstartview={FitH},
     pdftitle={$title$},
-pdfauthor={$author$},
-pdfsubject={$subject$},
-pdfcreator={$creator$},
-pdfproducer={$producer$},
-pdfkeywords={$keywords$},
-bookmarks=true,
-bookmarksopen=true,
-bookmarksopenlevel=2,
-bookmarksnumbered=true,
-bookmarkstype=toc,
-colorlinks=true,
-linkcolor=black,
-filecolor=black,
-urlcolor=blue,
-citecolor=black,
-linktoc=all
+    pdfauthor={$author$},
+    pdfsubject={$subject$},
+    pdfcreator={$creator$},
+    pdfproducer={$producer$},
+    pdfkeywords={$keywords$},
+    bookmarks=true,
+    bookmarksopen=true,
+    bookmarksopenlevel=2,
+    bookmarksnumbered=true,
+    bookmarkstype=toc,
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,
+    urlcolor=blue,
+    citecolor=black,
+    linktoc=all
 }
 
 % --- Color Configuration ---
