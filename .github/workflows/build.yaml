@@ -23,12 +23,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Download latex-admonition
-        uses: actions/checkout@v5
-        with:
-          repository: GitHubonline1396529/callout2latex
-          path: temp/callout2latex
-
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5

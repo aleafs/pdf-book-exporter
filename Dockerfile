@@ -2,7 +2,6 @@ FROM debian:latest
 LABEL maintainer=aleafs<aleafs@qq.com>
 
 COPY . /app
-COPY temp/callout2latex/callout2latex.lua /app/filters/markdown-alert.lua
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -28,6 +27,7 @@ RUN apt-get update && \
     unzip 09_SourceHanSansSC.zip -d /usr/share/fonts && \
     rm -f 09_SourceHanSansSC.zip && \
     wget --progress=bar:force:noscroll -O/usr/share/fonts/SourceHanMono.ttc https://github.com/adobe-fonts/source-han-mono/releases/download/1.002/SourceHanMono.ttc && \
+    wget --progress=bar:force:noscroll -O/app/filters/markdown-alert.lua https://raw.githubusercontent.com/GitHubonline1396529/callout2latex/refs/heads/master/callout2latex.lua && \
     ln -f -s /app/vimrc /etc/vim/vimrc.local && \
     echo "alias ll='ls -l --color=auto'" >> /root/.bashrc
 
