@@ -8,6 +8,99 @@
 \usepackage{eso-pic}  % For background image placement
 \usepackage{xstring}  % For string comparison in conditionals
 
+% --- Markdown Alert --- %
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{tcolorbox}
+
+\definecolor{notetypecolor}{HTML}{316dca}%
+\definecolor{warningtypecolor}{HTML}{BB8009}%
+\definecolor{tiptypecolor}{HTML}{2EA043}%
+\definecolor{importanttypecolor}{HTML}{8256D0}%
+\definecolor{cautiontypecolor}{HTML}{C83C39}%
+
+\newcommand{\notetypename}{Note}
+\newcommand{\warningtypename}{Warning}
+\newcommand{\tiptypename}{Tip}
+\newcommand{\importanttypename}{Important}
+\newcommand{\cautiontypename}{Caution}
+
+\newtcolorbox{note}[1][]{%
+    enhanced,
+    breakable,
+    colback=white, % Background color.
+    colframe=notetypecolor, % Frame color.
+    coltitle=white, % Title color.
+    fonttitle=\bfseries\small, % Bold small font for block title.
+    fontupper=\bfseries, % Bold normal sized font for block text.
+    boxrule=0.75mm, % Frame line width.
+% arc=2mm, % Corner radius.
+    left=2.5pt, right=2.5pt, % Paddings.
+    top=2.5pt, bottom=2.5pt,
+    title={\notetypename~\thetcbcounter}, % Title format.
+}
+
+\newtcolorbox{warning}[1][]{%
+    enhanced,
+    breakable,
+    colback=white, % Background color.
+    colframe=warningtypecolor, % Frame color.
+    coltitle=white, % Title color.
+    fonttitle=\bfseries\small, % Bold small font for block title.
+    fontupper=\bfseries, % Bold normal sized font for block text.
+    boxrule=0.75mm, % Frame line width.
+% arc=2mm, % Corner radius.
+    left=2.5pt, right=2.5pt, % Paddings.
+    top=2.5pt, bottom=2.5pt,
+    title={\warningtypename~\thetcbcounter}, % Title format.
+}
+
+\newtcolorbox{tip}[1][]{%
+    enhanced,
+    breakable,
+    colback=white, % Background color.
+    colframe=tiptypecolor, % Frame color.
+    coltitle=white, % Title color.
+    fonttitle=\bfseries\small, % Bold small font for block title.
+    fontupper=\bfseries, % Bold normal sized font for block text.
+    boxrule=0.75mm, % Frame line width.
+% arc=2mm, % Corner radius.
+    left=2.5pt, right=2.5pt, % Paddings.
+    top=2.5pt, bottom=2.5pt,
+    title={\tiptypename~\thetcbcounter}, % Title format.
+}
+
+\newtcolorbox{important}[1][]{%
+    enhanced,
+    breakable,
+    colback=white, % Background color.
+    colframe=importanttypecolor, % Frame color.
+    coltitle=white, % Title color.
+    fonttitle=\bfseries\small, % Bold small font for block title.
+    fontupper=\bfseries, % Bold normal sized font for block text.
+    boxrule=0.75mm, % Frame line width.
+% arc=2mm, % Corner radius.
+    left=2.5pt, right=2.5pt, % Paddings.
+    top=2.5pt, bottom=2.5pt,
+    title={\importanttypename~\thetcbcounter}, % Title format.
+}
+
+\newtcolorbox{caution}[1][]{%
+    enhanced,
+    breakable,
+    colback=white, % Background color.
+    colframe=cautiontypecolor, % Frame color.
+    coltitle=white, % Title color.
+    fonttitle=\bfseries\small, % Bold small font for block title.
+    fontupper=\bfseries, % Bold normal sized font for block text.
+    boxrule=0.75mm, % Frame line width.
+% arc=2mm, % Corner radius.
+    left=2.5pt, right=2.5pt, % Paddings.
+    top=2.5pt, bottom=2.5pt,
+    title={\cautiontypename~\thetcbcounter}, % Title format.
+}
+
 % Define allowbreak command early to prevent undefined control sequence errors
 % This is needed by the table-wrap filter which inserts \allowbreak commands
 % Use a more robust definition that works in all contexts including textbf
