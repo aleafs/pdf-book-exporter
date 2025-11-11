@@ -45,7 +45,7 @@ echo "=== 工作目录文件 ==="
 echo "关键文件存在性:"
 for file in ./template.tex ./cli.py ./emoji-passthrough.lua; do
     if [ -f "$file" ]; then
-        echo "✅ $(basename $file) 存在 ($(stat -f%z "$file") bytes)"
+        echo "✅ $(basename $file) 存在 ($(stat -c%s "$file") bytes)"
     else
         echo "❌ $(basename $file) 缺失"
     fi
