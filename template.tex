@@ -5,7 +5,6 @@
 
 % --- Packages ---
 \usepackage{iftex}
-\usepackage{fvextra}
 \usepackage{eso-pic}  % For background image placement
 \usepackage{xstring}  % For string comparison in conditionals
 
@@ -29,26 +28,6 @@ $if(emoji)$
 \fi
 $endif$
 
-\usepackage{fontspec}
-\defaultfontfeatures{Renderer=HarfBuzz}
-\setmainfont{Source Han Sans SC}[
-    Scale=1.0,
-    UprightFont=Source Han Sans SC Normal,
-    BoldFont=Source Han Sans SC Bold,
-    ItalicFont=Source Han Sans SC Normal,
-    BoldItalicFont=Source Han Sans SC Bold,
-    Renderer=HarfBuzz
-]
-\setsansfont{Source Han Sans SC}[
-    Scale=1.0,
-    UprightFont=Source Han Sans SC Normal,
-    BoldFont=Source Han Sans SC Bold,
-    Renderer=HarfBuzz
-]
-\setmonofont{Source Han Mono SC}[
-    BoldFont=Source Han Mono SC Bold
-]
-
 % LuaLaTeX multilingual font configuration
 % 
 % LuaLaTeX provides superior font handling through:
@@ -63,7 +42,64 @@ $endif$
 % - Advanced typography features (ligatures, kerning)
 % - Emoji and color font support
 \ifluatex
+  \usepackage{fontspec}
+  \defaultfontfeatures{Renderer=HarfBuzz}
 
+  % Configure main font with comprehensive CJK support
+  % 
+  % Font selection priority:
+  % 1. Source Han Sans SC - Adobe/Google's pan-CJK font family
+  %    - Covers Simplified Chinese, Japanese, Korean
+  %    - Excellent Unicode coverage and glyph quality
+  %    - Professional typography features
+  % 2. Noto Sans CJK SC - Google's alternative CJK solution
+  %    - Similar coverage to Source Han Sans
+  %    - Open source and widely available
+  % 3. PingFang SC - Apple's system font for Chinese (macOS)
+  %    - High-quality rendering on Apple systems
+  %    - Optimized for screen and print display
+  \IfFontExistsTF{Source Han Sans SC}{
+    \setmainfont{Source Han Sans SC}[
+      Scale=1.0,
+      UprightFont=Source Han Sans SC Regular,
+      BoldFont=Source Han Sans SC Bold,
+      ItalicFont=Source Han Sans SC Regular,
+      BoldItalicFont=Source Han Sans SC Bold,
+      Renderer=HarfBuzz
+    ]
+    \setsansfont{Source Han Sans SC}[
+      Scale=1.0,
+      UprightFont=Source Han Sans SC Regular,
+      BoldFont=Source Han Sans SC Bold,
+      Renderer=HarfBuzz
+    ]
+    \typeout{Set main font to Source Han Sans SC for comprehensive CJK support}
+  }{
+    \IfFontExistsTF{Noto Sans CJK SC}{
+      \setmainfont{Noto Sans CJK SC}[
+        Scale=1.0,
+        BoldFont=Noto Sans CJK SC Bold,
+        Renderer=HarfBuzz
+      ]
+      \setsansfont{Noto Sans CJK SC}[
+        Scale=1.0,
+        BoldFont=Noto Sans CJK SC Bold,
+        Renderer=HarfBuzz
+      ]
+      \typeout{Set main font to Noto Sans CJK SC}
+    }{
+      \IfFontExistsTF{PingFang SC}{
+        \setmainfont{PingFang SC}[
+          Scale=1.0,
+          BoldFont=PingFang SC Semibold,
+          Renderer=HarfBuzz
+        ]
+        \typeout{Set main font to PingFang SC (macOS fallback)}
+      }{
+        \typeout{Warning: No suitable CJK font found}
+      }
+    }
+  }
 \else
   % XeLaTeX fallback configuration
   % 
@@ -77,18 +113,201 @@ $endif$
   % - Faster compilation than LuaLaTeX for simple documents
   % - Wide package compatibility
   % - Stable and well-tested CJK support
+  \usepackage{fontspec}
   \usepackage{xeCJK}
+
+  % Configure main fonts for XeLaTeX
+  \IfFontExistsTF{Source Han Sans SC}{
+    \setmainfont{Source Han Sans SC}[
+      Scale=1.0,
+      BoldFont=Source Han Sans SC Bold,
+      Renderer=HarfBuzz
+    ]
+    \setCJKmainfont{Source Han Sans SC}[
+      Scale=1.0,
+      BoldFont=Source Han Sans SC Bold
+    ]
+    \typeout{Set fonts to Source Han Sans SC (XeLaTeX)}
+  }{
+    \typeout{Using default fonts (XeLaTeX)}
+  }
 \fi
 
+
+% Enhanced multilingual font support (CJK and emoji)
+% 
+% This section configures specialized fonts for:
+% 1. Japanese text (Hiragana, Katakana, Kanji)
+% 2. Korean text (Hangul, Hanja)
+% 3. Emoji and pictographic symbols
+% 4. Proper font fallback chains
+%
+% Benefits of separate font families:
+% - Language-specific glyph variants (e.g., Chinese vs Japanese Kanji)
+% - Optimized character spacing and metrics
+% - Cultural typography preferences
+% - Better rendering quality for each script
+\ifluatex
+  % LuaLaTeX multilingual font configuration
+  % Uses newfontfamily to define specialized font commands
+  % 配置日文字体
+  \IfFontExistsTF{Source Han Sans JP}{
+    \newfontfamily\jpfont{Source Han Sans JP}[
+      BoldFont=Source Han Sans JP Bold,
+      Renderer=HarfBuzz
+    ]
+    \typeout{Set Japanese font to Source Han Sans JP}
+  }{
+    \IfFontExistsTF{Hiragino Sans}{
+      \newfontfamily\jpfont{Hiragino Sans}[
+        BoldFont=Hiragino Sans W6,
+        Renderer=HarfBuzz
+      ]
+      \typeout{Set Japanese font to Hiragino Sans}
+    }{
+      \let\jpfont\rmfamily
+      \typeout{No Japanese font available, using main font}
+    }
+  }
+
+  % 配置韩文字体
+  \IfFontExistsTF{Source Han Sans KR}{
+    \newfontfamily\krfont{Source Han Sans KR}[
+      BoldFont=Source Han Sans KR Bold,
+      Renderer=HarfBuzz
+    ]
+    \typeout{Set Korean font to Source Han Sans KR}
+  }{
+    \IfFontExistsTF{Apple SD Gothic Neo}{
+      \newfontfamily\krfont{Apple SD Gothic Neo}[
+        BoldFont=Apple SD Gothic Neo Bold,
+        Renderer=HarfBuzz
+      ]
+      \typeout{Set Korean font to Apple SD Gothic Neo}
+    }{
+      \let\krfont\rmfamily
+      \typeout{No Korean font available, using main font}
+    }
+  }
+\else
+  % XeLaTeX 的多语言字体配置
+  \IfFontExistsTF{Source Han Sans JP}{
+    \setCJKfamilyfont{jp}{Source Han Sans JP}[
+      BoldFont=Source Han Sans JP Bold
+    ]
+    \newcommand{\jpfont}{\CJKfamily{jp}}
+    \typeout{Set Japanese font to Source Han Sans JP (XeLaTeX)}
+  }{
+    \newcommand{\jpfont}{}
+    \typeout{No Japanese font available (XeLaTeX)}
+  }
+
+  \IfFontExistsTF{Source Han Sans KR}{
+    \setCJKfamilyfont{kr}{Source Han Sans KR}[
+      BoldFont=Source Han Sans KR Bold
+    ]
+    \newcommand{\krfont}{\CJKfamily{kr}}
+    \typeout{Set Korean font to Source Han Sans KR (XeLaTeX)}
+  }{
+    \newcommand{\krfont}{}
+    \typeout{No Korean font available (XeLaTeX)}
+  }
+\fi
 
 $if(emoji)$
 % 配置 emoji 字体 - 针对 LuaLaTeX 和 XeLaTeX 优化
 \ifluatex
-  \usepackage{emoji}
-  \setemojifont{Noto Color Emoji}
-  \typeout{Set emoji font to Noto Color Emoji (LuaLaTeX)}
+  % LuaLaTeX emoji 字体配置
+  \IfFontExistsTF{Apple Color Emoji}{
+    \newfontfamily\emojifont{Apple Color Emoji}[
+      Renderer=HarfBuzz
+    ]
+    \typeout{Set emoji font to Apple Color Emoji (LuaLaTeX)}
+  }{
+    \IfFontExistsTF{Noto Color Emoji}{
+      \newfontfamily\emojifont{Noto Color Emoji}[
+        Renderer=HarfBuzz
+      ]
+      \typeout{Set emoji font to Noto Color Emoji (LuaLaTeX)}
+    }{
+      \IfFontExistsTF{Segoe UI Emoji}{
+        \newfontfamily\emojifont{Segoe UI Emoji}[
+          Renderer=HarfBuzz
+        ]
+        \typeout{Set emoji font to Segoe UI Emoji (LuaLaTeX)}
+      }{
+        \IfFontExistsTF{Noto Emoji}{
+          \newfontfamily\emojifont{Noto Emoji}[
+            Renderer=HarfBuzz
+          ]
+          \typeout{Set emoji font to Noto Emoji (LuaLaTeX)}
+        }{
+          % 使用符号字体作为 fallback
+          \IfFontExistsTF{Arial Unicode MS}{
+            \newfontfamily\emojifont{Arial Unicode MS}[
+              Renderer=HarfBuzz
+            ]
+            \typeout{Set emoji font to Arial Unicode MS (LuaLaTeX fallback)}
+          }{
+            \let\emojifont\rmfamily
+            \typeout{Warning: No emoji font found (LuaLaTeX), using main font}
+          }
+        }
+      }
+    }
+  }
+\else
+  % XeLaTeX emoji 字体配置
+  \IfFontExistsTF{Apple Color Emoji}{
+    \newfontfamily\emojifont{Apple Color Emoji}[
+      Renderer=HarfBuzz,
+      RawFeature={color=1}
+    ]
+    \typeout{Set emoji font to Apple Color Emoji with color support (XeLaTeX)}
+  }{
+    \IfFontExistsTF{Noto Color Emoji}{
+      \newfontfamily\emojifont{Noto Color Emoji}[
+        Renderer=HarfBuzz,
+        RawFeature={color=1}
+      ]
+      \typeout{Set emoji font to Noto Color Emoji with color support (XeLaTeX)}
+    }{
+      \IfFontExistsTF{Arial Unicode MS}{
+        \newfontfamily\emojifont{Arial Unicode MS}
+        \typeout{Set emoji font to Arial Unicode MS (XeLaTeX fallback)}
+      }{
+        \let\emojifont\rmfamily
+        \typeout{Warning: No emoji font found (XeLaTeX), using main font}
+      }
+    }
+  }
 \fi
-$endif$
+
+% 配置中文支持
+\ifluatex
+  % LuaLaTeX 中文配置 - 使用 fontset=none 避免默认字体冲突
+  \usepackage[UTF8,fontset=none]{ctex}
+
+  % 手动配置 ctex 字体，使用我们已经设置的字体
+  \IfFontExistsTF{Source Han Sans SC}{
+    \setCJKmainfont{Source Han Sans SC}[
+      BoldFont=Source Han Sans SC Bold
+    ]
+    \setCJKsansfont{Source Han Sans SC}[
+      BoldFont=Source Han Sans SC Bold
+    ]
+    \setCJKmonofont{Source Han Mono SC}[
+      BoldFont=Source Han Mono SC Bold
+    ]
+    \typeout{Configured ctex with Source Han Sans SC (LuaLaTeX)}
+  }{
+    \typeout{Warning: Source Han Sans SC not found for ctex (LuaLaTeX)}
+  }
+\else
+  % XeLaTeX 中文配置
+  \usepackage[UTF8]{ctex}
+  \typeout{Using ctex for Chinese support (XeLaTeX)}
+\fi
 
 % 配置中英文间距（ctex 会自动处理）
 \ctexset{
@@ -96,6 +315,40 @@ $endif$
   space=auto,
   autoindent=true
 }
+
+% 配置符号字体（用于特殊符号和 emoji fallback）
+\IfFontExistsTF{Noto Sans Symbols}{
+  \newfontfamily\symbolfont{Noto Sans Symbols}
+  \typeout{Set symbol font to Noto Sans Symbols}
+}{
+  \IfFontExistsTF{Segoe UI Symbol}{
+    \newfontfamily\symbolfont{Segoe UI Symbol}
+    \typeout{Set symbol font to Segoe UI Symbol}
+  }{
+    \IfFontExistsTF{Arial Unicode MS}{
+      \newfontfamily\symbolfont{Arial Unicode MS}
+      \typeout{Set symbol font to Arial Unicode MS}
+    }{
+      \let\symbolfont\rmfamily
+      \typeout{Warning: No symbol font found}
+    }
+  }
+}
+$else$
+% 非 emoji 模式下也配置符号字体
+\IfFontExistsTF{Noto Sans Symbols}{
+  \newfontfamily\symbolfont{Noto Sans Symbols}
+  \typeout{Set symbol font to Noto Sans Symbols}
+}{
+  \IfFontExistsTF{Arial Unicode MS}{
+    \newfontfamily\symbolfont{Arial Unicode MS}
+    \typeout{Set symbol font to Arial Unicode MS}
+  }{
+    \let\symbolfont\rmfamily
+    \typeout{Warning: No symbol font found}
+  }
+}
+$endif$
 
 \usepackage{geometry}
 \usepackage{fancyhdr}
@@ -113,6 +366,7 @@ $endif$
 \usepackage{parskip}
 \usepackage{listings}
 \usepackage{minted}
+\usepackage{fvextra}
 \usepackage{amsmath}  % Required for mathematical environments like align
 \usepackage{amssymb}
 \usepackage{hyperref}
@@ -614,6 +868,26 @@ $endif$
 \newcommand{\greencheckmark}{\textcolor{green}{✓}}
 \newcommand{\redcrossmark}{\textcolor{red}{✗}}
 \newcommand{\orangewarningmark}{\textcolor{orange}{⚠}}
+
+% Define enhanced emoji and symbol commands with intelligent fallback
+% Universal emoji command that tries multiple font sources in order
+\newcommand{\emoji}[1]{%
+  \ifcsname emojifont\endcsname%
+    \begingroup%
+    \emojifont%
+    #1%
+    \endgroup%
+  \else%
+    \ifcsname symbolfont\endcsname%
+      \begingroup%
+      \symbolfont%
+      #1%
+      \endgroup%
+    \else%
+      #1%
+    \fi%
+  \fi%
+}
 
 % Smart symbol command that tries symbol font first, then emoji font
 \newcommand{\smartsymbol}[1]{%
