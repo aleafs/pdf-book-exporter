@@ -2,7 +2,7 @@ FROM debian:latest
 LABEL maintainer=aleafs<aleafs@qq.com>
 
 COPY . /app
-#COPY temp/callout2latex/callout2latex.lua /app/filters/
+COPY temp/callout2latex/callout2latex.lua /app/filters/markdown-alert.lua
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
