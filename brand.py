@@ -12,37 +12,41 @@ def get_file_content(path: str):
         return f.read().strip()
 
 
+def load_brand_config(path: str):
+    that = Config()
+    root = pathlib.Path(os.path.join(os.path.dirname(__file__), path)).expanduser().resolve()
+    if os.path.isdir(root):
+        try:
+            meta = yaml.safe_load(get_file_content(os.path.join(root, 'config.yaml')))
+            that.title = meta.get('title', that.title)
+            that.vendor = meta.get('vendor', that.vendor)
+        except Exception as e:
+            pass
+
+        for name in os.listdir(root):
+            if not that.logo and name.startswith('logo.'):
+                that.logo = os.path.join(root, name)
+
+            if not that.title and name.startswith('title.'):
+                that.title = get_file_content(os.path.join(root, name))
+
+        if not that.title:
+            that.title = 'Bluepipe'
+
+        if not that.prefix:
+            that.prefix = that.title.lower()
+
+        if not that.vendor:
+            that.vendor = '杭州萃蓝网络科技有限公司'
+
+    return that
+
+
 class Config:
     title: str = None
     prefix: str = None
     vendor: str = None
     logo: str = None
-
-    def __init__(self, path: str):
-        root = pathlib.Path(os.path.join(os.path.dirname(__file__), path)).expanduser().resolve()
-        if os.path.isdir(root):
-            try:
-                meta = yaml.safe_load(get_file_content(os.path.join(root, 'config.yaml')))
-                self.title = meta.get('title', self.title)
-                self.vendor = meta.get('vendor', self.vendor)
-            except Exception as e:
-                pass
-
-            for name in os.listdir(root):
-                if not self.logo and name.startswith('logo.'):
-                    self.logo = os.path.join(root, name)
-
-                if not self.title and name.startswith('title.'):
-                    self.title = get_file_content(os.path.join(root, name))
-
-            if not self.title:
-                self.title = 'Bluepipe'
-
-            if not self.prefix:
-                self.prefix = self.title.lower()
-
-            if not self.vendor:
-                self.vendor = '杭州萃蓝网络科技有限公司'
 
     def __str__(self):
         return f"{self.title}: prefix={self.prefix}, vendor={self.vendor}, logo={self.logo}"
@@ -56,5 +60,5 @@ class Config:
 
 
 if __name__ == '__main__':
-    config = Config(sys.argv[1])
+    config = load_brand_config(sys.argv[1])
     print(config)
