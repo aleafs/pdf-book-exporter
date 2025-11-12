@@ -1,11 +1,5 @@
 source $VIMRUNTIME/vimrc_example.vim 
 
-map <F6> :tabnext<CR>
-map <F5> :tabprevious<CR>
-map <F3> :tabnew<CR>
-map <F9> :make %<<CR>
-map gf :tabnew <cfile><CR>
-
 syntax on
 filetype on
 
