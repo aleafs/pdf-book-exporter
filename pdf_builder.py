@@ -2,6 +2,7 @@ import os
 import tempfile
 
 import cache_utils
+from brand_config import Config
 
 
 def add_lua_filters(cmd: list[str]) -> list[str]:
@@ -13,7 +14,10 @@ def add_lua_filters(cmd: list[str]) -> list[str]:
 
     return cmd
 
-def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_arg=None, appendix_path=None, emoji=False, max_table_width=0.98):
+
+def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, render: Config,
+                      template_path_arg=None, appendix_path=None,
+                      emoji=False, max_table_width=0.98):
     import os
     import subprocess
     from datetime import datetime
@@ -97,17 +101,20 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
 
         with tempfile.NamedTemporaryFile('w+', delete=False, suffix='.md', prefix='debug_') as tmp:
             for child in root_node.children:
-                tree.write_hierarchical_content(tmp, child, book_dir, temp_dir, temp_pngs, level=1, cache_dir=cache_dir, process_images_in_content=image_utils.process_images_in_content)
+                tree.write_hierarchical_content(tmp, child, book_dir, temp_dir, temp_pngs,
+                                                render,
+                                                level=1, cache_dir=cache_dir,
+                                                process_images_in_content=image_utils.process_images_in_content)
             tmp_path = tmp.name
             if appendix_path:
                 with open(appendix_path, 'r', encoding='utf-8') as appendix_file:
                     tmp.write('\n\n')
-                    tmp.write(appendix_file.read())
+                    tmp.write(render.replace(appendix_file.read()))
 
         emoji_validation = emoji_support.validate_emoji_support_requirements(emoji, diagnostics_mode=False)
         if not emoji_validation['valid']:
             print("\n❌ EMOJI SUPPORT VALIDATION FAILED")
-            print("="*50)
+            print("=" * 50)
             for error in emoji_validation['errors']:
                 print(f"❌ {error}")
             print("\n💡 FALLBACK OPTIONS:")
@@ -118,7 +125,8 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
                 print("\n🔄 ATTEMPTING GRACEFUL FALLBACK...")
                 print("   Switching to XeLaTeX without emoji support...")
                 try:
-                    return build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_arg, appendix_path, emoji=False, max_table_width=max_table_width)
+                    return build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_arg,
+                                             appendix_path, emoji=False, max_table_width=max_table_width)
                 except Exception as fallback_error:
                     print(f"❌ Fallback also failed: {fallback_error}")
                     return False
@@ -128,7 +136,8 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
             print(f"⚠️  {warning}")
         if 'system_info' in emoji_validation:
             system_info = emoji_validation['system_info']
-            print(f"🖥️  System: {system_info.get('platform', 'Unknown')} (" f"{system_info.get('architecture', 'Unknown')})")
+            print(
+                f"🖥️  System: {system_info.get('platform', 'Unknown')} (" f"{system_info.get('architecture', 'Unknown')})")
             if 'tex_distribution' in system_info:
                 print(f"📄 LaTeX: {system_info['tex_distribution']}")
 
@@ -328,7 +337,8 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
                         cmd = emoji_support._apply_error_fixes(cmd, error_analysis['suggested_fixes'])
                     continue
                 else:
-                    emoji_support._handle_final_pandoc_failure(e, emoji, pdf_engine, emoji_validation, tmp_path, template_path, emoji_filter_path)
+                    emoji_support._handle_final_pandoc_failure(e, emoji, pdf_engine, emoji_validation, tmp_path,
+                                                               template_path, emoji_filter_path)
                     return False
             except Exception as e:
                 last_error = e
@@ -392,7 +402,7 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
                 if tex_result.stderr:
                     print(f"⚠️  LaTeX export warnings:\n{tex_result.stderr}")
                 print(f"📝 LaTeX source exported: {output_tex}")
-                    
+
             except Exception as e:
                 print(f"⚠️  Failed to export LaTeX source: {e}")
 
@@ -434,57 +444,61 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path_a
             # os.unlink(tmp_path)
         return success
 
-def build_pdf(book_dir, root_node, output_pdf, metadata, template_path=None, appendix_path=None, emoji=False, max_table_width=0.98):
-    return build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, template_path, appendix_path, emoji, max_table_width)
+
+def build_pdf(book_dir, root_node, output_pdf, metadata, render: Config, template_path=None, appendix_path=None,
+              emoji=False, max_table_width=0.98):
+    return build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, render, template_path, appendix_path, emoji,
+                             max_table_width)
+
 
 def prepare_cover_for_latex(cover_path, config, temp_dir, cache_dir=None):
     """Prepare cover image for LaTeX processing without text overlay."""
     if not cover_path or not os.path.exists(cover_path):
         print("No cover image found")
         return None
-        
+
     try:
         # Get cover configuration
         cover_config = config.get('cover_config', {})
-        
+
         # If text overlay is disabled, just return the original image
         if not cover_config.get('overlay_enabled', True):
             print("Cover text overlay disabled, using original image")
             return cover_path
-        
+
         # For WebP covers, convert to PNG for better LaTeX compatibility
         if cover_path.lower().endswith('.webp'):
             print(f"Converting WebP cover to PNG for LaTeX: {cover_path}")
             try:
                 from PIL import Image
                 import uuid
-                
+
                 # Generate cache key for WebP conversion
                 source_hash = cache_utils.get_file_hash(cover_path)[:12] if cover_path else "default"
                 cache_key = f"cover_png_{source_hash}"
-                
+
                 # Check cache first
                 if cache_dir:
                     cached_cover = get_cached_image_by_key(cache_key, cache_dir, '.png')
                     if cached_cover:
                         print(f"Using cached PNG cover: {cached_cover}")
                         return cached_cover
-                
+
                 # Convert WebP to PNG
                 with Image.open(cover_path) as img:
                     if img.mode != 'RGB':
                         img = img.convert('RGB')
-                    
+
                     png_cover_path = os.path.join(temp_dir, f"cover_{uuid.uuid4().hex[:8]}.png")
                     img.save(png_cover_path, 'PNG', quality=95)
-                    
+
                     # Cache the result
                     if cache_dir:
                         save_to_cache_with_key(cache_key, png_cover_path, cache_dir)
-                    
+
                     print(f"Converted cover to PNG: {png_cover_path}")
                     return png_cover_path
-                    
+
             except ImportError:
                 print("PIL (Pillow) not available, using original WebP cover")
                 return cover_path
@@ -495,7 +509,7 @@ def prepare_cover_for_latex(cover_path, config, temp_dir, cache_dir=None):
             # For non-WebP images, use directly
             print(f"Using original cover image: {cover_path}")
             return cover_path
-            
+
     except Exception as e:
         print(f"Error preparing cover: {e}")
         return cover_path
@@ -519,14 +533,14 @@ def save_to_cache_with_key(cache_key, file_path, cache_dir):
     """Save file to cache with a specific cache key."""
     import shutil
     import time
-    
+
     try:
         cache_filename = f"{cache_key}.png"
         cache_path = os.path.join(cache_dir, cache_filename)
-        
+
         # Copy file to cache
         shutil.copy2(file_path, cache_path)
-        
+
         # Update metadata
         metadata = cache_utils.load_cache_metadata(cache_dir)
         metadata[cache_filename] = {
@@ -535,7 +549,7 @@ def save_to_cache_with_key(cache_key, file_path, cache_dir):
             'cache_path': cache_path
         }
         cache_utils.save_cache_metadata(cache_dir, metadata)
-        
+
         print(f"Cached enhanced image: {cache_path}")
         return cache_path
     except Exception as e:

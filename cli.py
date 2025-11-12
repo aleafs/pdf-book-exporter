@@ -44,10 +44,10 @@ def main():
 
     # Load book configuration from _index.md
     book_config = load_book_config(args.book_dir, render)
-    print(book_config)
-
     output_pdf = args.output or os.path.join(args.book_dir, 'book.pdf')
-    ok = build_pdf(args.book_dir, root_node, output_pdf, book_config, args.template, args.appendix, args.emoji,
+    ok = build_pdf(args.book_dir, root_node, output_pdf, book_config,
+                   render,
+                   args.template, args.appendix, args.emoji,
                    args.max_table_width)
     if not ok:
         # Non-zero exit so callers (e.g., Makefile) can detect failure
