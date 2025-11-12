@@ -1566,116 +1566,25 @@ $endif$
 % --- Document Body ---
 \begin{document}
 
-
-% Cover Page
-$if(cover-image)$
-$if(cover_title_text)$
-% Custom cover with text overlay
-\newpage
-\thispagestyle{empty}
-\pagenumbering{gobble}
-
-% Set cover background
-\AddToShipoutPicture*{%
-\AtPageLowerLeft{%
-\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{$cover-image$}%
-}%
-}
-
-% Cover text setup with improved layout
-\vspace*{0pt}
-
-% Title section - positioned in upper third
-$if(cover_title_text)$
-$if(cover_title_color)$
-\definecolor{covertitlecolor}{HTML}{$cover_title_color$}
-$endif$
-\vspace*{0.15\textheight}
-\begin{center}
-{\fontsize{$if(cover_title_font_size)$$cover_title_font_size$$else$48$endif$pt}{$if(cover_title_line_height)$$cover_title_line_height$$else$65$endif$pt}\selectfont
-$if(cover_title_color)$\color{covertitlecolor}$endif$
-\parbox{0.9\textwidth}{\centering\textbf{$cover_title_text$}}}
-\end{center}
-$endif$
-
-% Subtitle section - right below title with minimal spacing
-$if(cover_subtitle_text)$
-$if(cover_subtitle_color)$
-\definecolor{coversubtitlecolor}{HTML}{$cover_subtitle_color$}
-$endif$
-\vspace{0.03\textheight}
-\begin{center}
-{\fontsize{$if(cover_subtitle_font_size)$$cover_subtitle_font_size$$else$18$endif$pt}{$if(cover_subtitle_line_height)$$cover_subtitle_line_height$$else$24$endif$pt}\selectfont
-$if(cover_subtitle_color)$\color{coversubtitlecolor}$endif$
-\parbox{0.9\textwidth}{\centering $cover_subtitle_text$}}
-\end{center}
-$endif$
-
-% Flexible space to push bottom content down
-\vfill
-
-% Author section - positioned at bottom
-$if(cover_author_text)$
-$if(cover_author_color)$
-\definecolor{coverauthorcolor}{HTML}{$cover_author_color$}
-$endif$
-\begin{center}
-{\fontsize{$if(cover_author_font_size)$$cover_author_font_size$$else$24$endif$pt}{$if(cover_author_line_height)$$cover_author_line_height$$else$32$endif$pt}\selectfont
-$if(cover_author_color)$\color{coverauthorcolor}$endif$
-$cover_author_text$}
-\end{center}
-$endif$
-
-% Export date section - positioned below author
-$if(cover_export_date)$
-$if(cover_subtitle_color)$
-\definecolor{coverdatecolor}{HTML}{$cover_subtitle_color$}
-$else$
-\definecolor{coverdatecolor}{HTML}{C0C0C0}
-$endif$
-\vspace{0.02\textheight}
-\begin{center}
-{\fontsize{14pt}{14pt}\selectfont
-\color{coverdatecolor}
-$cover_export_date$}
-\end{center}
-$endif$
-
-% Bottom margin
-\vspace*{0.08\textheight}
-\clearpage
-\ClearShipoutPicture
-
-$else$
-% Standard cover without text overlay
-\includepdf[pages={1},pagecommand={\thispagestyle{empty}},width=\paperwidth]{$cover-image$}
-$endif$
-$endif$
-
 % Title Page (Commented out - removed as the cover already contains the book info)
-% \newcommand{\mytitlepage}{
-%     \thispagestyle{empty}
-%     \begin{center}
-%     \vspace*{2cm}
-%     {\Huge\bfseries $title$\par}
-%     \vspace{1cm}
-%     {\Large $author$\par}
-%     \vspace{1.5cm}
-%     {\large $date$\par}
-%     $if(exported)$
-%     \vspace{0.8cm}
-%     {\normalsize 导出时间：$exported$\par}
-%     $endif$
-%     $if(website)$
-%     \vspace{0.5cm}
-%     {\normalsize 在线阅读：\url{$website$\par}
-%     $endif$
-%     \vfill
-%     \end{center}
-%     \newpage
-%     \setcounter{page}{1}
-% }
-% \mytitlepage
+\newcommand{\mytitlepage}{
+    \thispagestyle{empty}
+    \begin{center}
+    \vspace*{2cm}
+    {\Huge\bfseries $title$\par}
+    \vspace{1cm}
+    {\Large $author$\par}
+    \vspace{1.5cm}
+    $if(exported)$
+    \vspace{0.8cm}
+    {\normalsize 修订时间：$exported$\par}
+    $endif$
+    \vfill
+    \end{center}
+    \newpage
+    \setcounter{page}{1}
+}
+\mytitlepage
 
 % Table of Contents - prevent blank page after cover
 \clearpage
