@@ -1572,15 +1572,14 @@ $endif$
 % Title Page (Commented out - removed as the cover already contains the book info)
 \newcommand{\mytitlepage}{
     \thispagestyle{empty}
-    \hspace{0pt}
     \begin{center}
+    \vspace*{3cm}
     {\fontsize{36}{1} \textbf{$title$} \par}
-    \vspace{480pt}
+    \vspace{15cm}
     $if(author)$
-    {\normalsize $author$\par}
+    {\large $author$\par}
     $endif$
-    \vspace{15pt}
-    {\normalsize 修订时间: {\today} \par}
+    {\large 修订时间: {\today} \par}
     \vfill
     \end{center}
     \newpage
