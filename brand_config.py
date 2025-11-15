@@ -19,6 +19,7 @@ def load_brand_config(path: str):
         try:
             meta = yaml.safe_load(get_file_content(os.path.join(root, 'config.yaml')))
             that.title = meta.get('title', that.title)
+            that.email = meta.get('email', that.email)
             that.vendor = meta.get('vendor', that.vendor)
         except Exception as e:
             pass
@@ -44,6 +45,7 @@ def load_brand_config(path: str):
 
 class Config:
     title: str = None
+    email: str = ''
     prefix: str = None
     vendor: str = None
     logo: str = None
@@ -56,6 +58,7 @@ class Config:
     def replace(self, content: str):
         return (content.replace('$Title$', self.title)
                 .replace('$Prefix$', self.prefix)
+                .replace('$Email$', self.email)
                 .replace('$Vendor$', self.vendor))
 
 
