@@ -101,6 +101,9 @@ def build_pdf_xelatex(book_dir, root_node, output_pdf, metadata, render: Config,
 
         with tempfile.NamedTemporaryFile('w+', delete=False, suffix='.md', prefix='debug_') as tmp:
             for child in root_node.children:
+                if child.title:
+                    child.title = render.replace(child.title)
+
                 tree.write_hierarchical_content(tmp, child, book_dir, temp_dir, temp_pngs,
                                                 render,
                                                 level=1, cache_dir=cache_dir,

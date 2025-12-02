@@ -20,6 +20,7 @@ def load_brand_config(path: str):
             meta = yaml.safe_load(get_file_content(os.path.join(root, 'config.yaml')))
             that.title = meta.get('title', that.title)
             that.email = meta.get('email', that.email)
+            that.prefix = meta.get('prefix', that.prefix)
             that.vendor = meta.get('vendor', that.vendor)
         except Exception as e:
             pass
